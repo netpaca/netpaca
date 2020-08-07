@@ -1,0 +1,1 @@
+aio-eapi@git+https://github.com/jeremyschulman/aio-eapi.git

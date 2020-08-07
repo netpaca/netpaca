@@ -1,0 +1,7 @@
+first~=2.0.2
+click~=7.1.2
+httpx~=0.13.3
+tenacity~=6.2.0
+pydantic~=1.5.1
+toml~=0.10.1
+nwkatk@git+https://github.com/jeremyschulman/nwkatk.git

@@ -1,0 +1,116 @@
+# -----------------------------------------------------------------------------
+# Defaults
+#
+#    Top-level configuration section.
+#
+# -----------------------------------------------------------------------------
+
+[defaults]
+    # interval = 60   # 60 is the default collection interval
+    inventory = "$INVENTORY_CSV"
+
+    # currently only default credentials are supported; but plan to support the
+    # use of multiple credential options in the future.
+
+    credentials.username = "$NETWORK_USERNAME"
+    credentials.password = "$NETWORK_PASSWORD"
+
+    # If you want to defined multiple collectors but only want some of them to
+    # be active, then set the collections list.  Otherwise all collectors
+    # defined in this configuration file will be used.
+
+    # collectors = ["<name1>", "<name2>", ...]
+
+    # currently only one active exporter is supported; but plan to support
+    # multiple exports in the future.  If `exporters` is not defined then the
+    # system will use the first configured exporter.  Can can define multiple
+    # exporters and then use the `exporters` option to idntify the _one_
+    # exporter to use.
+
+    exporters = ["influxdb"]
+
+# -----------------------------------------------------------------------------
+# Collectors:
+#
+#   This section defines the collectors that you want to use.  Every device
+#   that is included from filtering will run all the collectors.
+#
+#   For each [collector.$<name>] section you will need to provide:
+#
+#   Required one of:
+#       use: <str> - identifies a packaged collector
+#       exporter: <str> - identifies a non-packaged collector
+#
+#   Optional:
+#       interval: <int> [min 30]
+#           Used to override the default collection internal
+#
+#       config: <dict>
+#           Identifies collector specific key-value configuration options.
+#
+#           For example assume the collector has an option flag called
+#           `robot_chicken` you can set to true or false:
+#
+#           config.robot_chicken = true
+#
+# -----------------------------------------------------------------------------
+
+[collectors.ifdom]
+    use = "nwka_netmon.collectors:ifdom"
+    # config.include_linkdown = false
+
+# -----------------------------------------------------------------------------
+# Exporters:
+#
+#   This defines exporter "name" value that you want to use.  Presently You can
+#   only have one exporter active at a time; but you can define multiple
+#   exporters (preparing for future enhancement of multiple exporters).
+#
+#   For each [exporter.$<name>] section you will need to provide:
+#
+#   Required one of:
+#       use: <str> - identifies a packaged exporter class entry-point
+#       exporter: <str> - identifies a non-packaged exporter class entry-point
+# -----------------------------------------------------------------------------
+
+#[exporters.circonus]
+#    use = "nwka_netmon.exporters:circonus"
+#    config.circonus_datasubmission_url = "$CIRCONUS_URL"
+#
+
+[exporters.influxdb]
+    use = "nwka_netmon.exporters:influxdb"
+    config.server_url = "$INFLUXDB_SERVER"
+    config.database = "db0"
+
+# -----------------------------------------------------------------------------
+# Device Drivers:
+#
+#   This section maps the device "os_name" values found in the inventory file to
+#   the device drivers that will be used to perform the collection process.
+#   For each [device_driver.$<os_name] section you will need to provide:
+#
+#   Required one of:
+#       use: <str> - identifies a packaged driver class entry-point
+#       driver: <str> - identifies a non-packaged driver class entry-point
+#
+#   Required:
+#       modules:    list of <str>, each identifies a Python module containing
+#                   collector(s)
+# -----------------------------------------------------------------------------
+
+[device_drivers.eos]
+    use = "nwka_netmon.device_drivers:arista.eos"
+    modules = ["nwkatk_netmon.collectors.ifdom.eapi"]
+
+[device_drivers.nxos]
+    use = "nwka_netmon.device_drivers:cisco.nxapi"
+    modules = ["nwkatk_netmon.collectors.ifdom.nxapi"]
+
+[device_drivers.nxos_ssh]
+    use = "nwka_netmon.device_drivers:cisco.nxos_ssh"
+    modules = ["nwkatk_netmon.collectors.ifdom.nxos_ssh"]
+
+[device_drivers.ios]
+    use = "nwka_netmon.device_drivers:cisco.ios_ssh"
+    modules = ["nwkatk_netmon.collectors.ifdom.ios_ssh"]
