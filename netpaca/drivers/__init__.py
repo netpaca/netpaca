@@ -17,7 +17,7 @@
 
 from typing import Optional
 
-from nwkatk.config_model import Credential
+from netpaca.core.config_model import Credential
 from netpaca import log
 
 

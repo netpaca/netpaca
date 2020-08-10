@@ -17,7 +17,7 @@
 from contextvars import ContextVar  # noqa
 
 import toml
-from nwkatk.config_model import config_validation_errors
+from netpaca.core.config_model import config_validation_errors
 
 from .config_model import ConfigModel, ValidationError
 

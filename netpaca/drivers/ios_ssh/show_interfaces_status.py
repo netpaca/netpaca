@@ -148,5 +148,5 @@ OPT_IF_DESC = '(\S+)?'
 _TEMPLATE = """
 <group>
 Port      Name               Status       Vlan       Duplex  Speed Type   {{ _headers_ }}
-</group>   
+</group>
 """

@@ -35,7 +35,7 @@ from netpaca.drivers import DriverBase, Credential
 
 class Device(DriverBase):
     """
-    Network Automation Netmon DriverBase for Cisco NXAPI devices.
+    DriverBase for Cisco NX-OS devices via NXAPI.
     """
 
     def __init__(self, name: str):

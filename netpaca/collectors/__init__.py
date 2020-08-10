@@ -20,7 +20,7 @@ import functools
 
 from pydantic import PositiveInt
 
-from nwkatk.config_model import NoExtraBaseModel
+from netpaca.core.config_model import NoExtraBaseModel
 from netpaca import Metric
 
 

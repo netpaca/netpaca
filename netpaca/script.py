@@ -27,7 +27,7 @@ from functools import update_wrapper
 # -----------------------------------------------------------------------------
 
 import click
-from nwkatk.cli.inventory import opts_inventory, pass_inventory_records
+from netpaca.core.cli.inventory import opts_inventory, pass_inventory_records
 
 # -----------------------------------------------------------------------------
 # Private Imports
@@ -91,9 +91,9 @@ def set_log_level(ctx, param, value):  # noqa
 
 def map_config_inventory(f):
     """
-    This decorator is used to map the netmon config model inventory value
-    into the kwargs['inventory'] so that the standard nwkatk inventory
-    loader will work as expected ;-)
+    This decorator is used to map the config model inventory value into the
+    kwargs['inventory'] so that the standard inventory loader will work as
+    expected ;-)
     """
 
     @click.pass_context
@@ -111,7 +111,7 @@ def map_config_inventory(f):
     "-C",
     type=click.File(),
     is_eager=True,
-    default="netmon.toml",
+    default="netpaca.toml",
     callback=load_config_file,
 )
 @opts_inventory

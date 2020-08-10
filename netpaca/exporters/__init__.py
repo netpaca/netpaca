@@ -15,7 +15,7 @@
 #
 
 from typing import Optional, List
-from nwkatk.config_model import BaseModel
+from netpaca.core.config_model import BaseModel
 
 from netpaca.drivers import DriverBase
 from netpaca import Metric

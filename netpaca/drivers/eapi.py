@@ -35,7 +35,7 @@ from netpaca.drivers import DriverBase, Credential
 
 class Device(DriverBase):
     """
-    Network Automation Netmon DriverBase for Arista EOS devices.
+    DriverBase for Arista EOS devices via EAPI.
     """
 
     def __init__(self, *vargs, **kwargs):

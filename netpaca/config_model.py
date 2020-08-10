@@ -44,7 +44,7 @@ from pydantic import ValidationError  # noqa: F401
 
 from netpaca import consts
 
-from nwkatk.config_model import (
+from netpaca.core.config_model import (
     NoExtraBaseModel,
     EnvExpand,
     EnvSecretStr,

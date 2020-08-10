@@ -28,7 +28,7 @@ import httpx
 from tenacity import retry, wait_exponential
 
 
-from nwkatk.config_model import EnvSecretUrl, NoExtraBaseModel
+from netpaca.core.config_model import EnvSecretUrl, NoExtraBaseModel
 
 # -----------------------------------------------------------------------------
 # Private Imports

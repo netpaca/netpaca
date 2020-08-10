@@ -1,4 +1,4 @@
-# Network Automation Toolkit for Monitoring Applications
+# Network Health Monitoring
 
 **UNDER DEVELOPMENT**
 
@@ -15,20 +15,16 @@ that state.  As the Developer of the monitoring application, you have the choice
 and control of what you want to collect and how you want to represent that
 metric to be used by your monitoring application.
 
-A metric **is not** used to store tabular information, such a list of MAC-addresses or
-routing entries.  The `nwkatk-netmon` framework was not specifically designed to support
-these types of collections.  That said, it may be possible to use this framework for that
-purpose; but it is not tested for such use.
+A metric **is not** used to store tabular information, such a list of
+MAC-addresses or routing entries.  The `netpaca` framework was not specifically
+designed to support these types of collections.  That said, it may be possible
+to use this framework for that purpose; but it is not tested for such use.
 
 # General Architecture
 
 The design goals of this framework is to allow the Developer complete choice and
 control on every aspect, including how to package and distribute Collectors,
-Device-Drivers, and Exporters.  While the `nwkatk-netmon` package does include a
-collector for Interface DOM metrics, the actual code could have been packaged
-separately. Further, the specific support for Cisco NXAPI and Arista EOS EAPI
-device-drivers could have been packaged separately.  The `nwkatk-netmon`
-framework uses a dynmaic importing mechanism that is based on the standard
-Python [setuptools](https://setuptools.readthedocs.io) package.  More
-information about the approach and usages of `nwkatk-netmon` will be documented
-shortly.  Stay tuned!
+Device-Drivers, and Exporters.  The `netpaca` framework uses a dynmaic importing
+mechanism that is based on the standard Python
+[setuptools](https://setuptools.readthedocs.io) package.  More information about
+the approach and usages of `netpaca` will be documented shortly.  Stay tuned!
