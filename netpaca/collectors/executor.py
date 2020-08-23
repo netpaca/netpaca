@@ -68,11 +68,16 @@ class CollectorExecutor(object):
                 # TODO: add profiling around the callector coroutine to measure
                 #       the amount of time it takes and log that in DEBUG
 
-                self.log.debug(f"{device.name}: Collecting {spec.collector.name}")
+                log_ident = f"{device.name}/{spec.collector.name}"
+                self.log.debug(f"{log_ident}: Collecting")
 
                 try:
-                    metrics = await coro(
-                        device=device, timestamp=timestamp_now(), **kwargs
+                    ts_start = timestamp_now()
+                    metrics = await coro(device=device, timestamp=ts_start, **kwargs)
+                    count = len(metrics) if metrics else 0
+                    ts_end = timestamp_now()
+                    self.log.debug(
+                        f"{log_ident}: count={count} time={ts_end-ts_start} ms"
                     )
 
                 except Exception as exc:  # noqa
@@ -84,7 +89,7 @@ class CollectorExecutor(object):
 
                     tb_text = traceback.format_exc()
                     self.log.critical(
-                        f"{device.name}: collector execution failed: {cls_name}:{str(exc)}\n"
+                        f"{log_ident}: collector execution failed: {cls_name}:{str(exc)}\n"
                         f"{tb_text}\nRemoving device from collection process"
                     )
                     return
@@ -94,14 +99,14 @@ class CollectorExecutor(object):
                         self.exporter.export_metrics(device=device, metrics=metrics)
                     )
                 else:
-                    self.log.warning(f"{device.name}: {spec.collector.name} 0 metrics")
+                    self.log.warning(f"{log_ident} 0 metrics")
 
                 # sleep for an interval of time and then create a new task to
                 # invoke the wrapped coroutine so that we get the effect of a
                 # periodic invocation.
 
                 self.log.debug(
-                    f"{device.name}: Waiting {interval}s before next collection"
+                    f"{log_ident}: Waiting {interval}s before next collection"
                 )
                 await asyncio.sleep(interval)
                 asyncio.create_task(wrapped(device=device, **kwargs))

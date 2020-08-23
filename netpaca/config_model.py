@@ -69,6 +69,7 @@ class DefaultsModel(NoExtraBaseModel, BaseSettings):
     interval: Optional[PositiveInt] = Field(default=consts.DEFAULT_INTERVAL)
     inventory: FilePathEnvExpand
     credentials: DefaultCredential
+    collectors: Optional[List[str]]
     exporters: Optional[List[str]]
 
 

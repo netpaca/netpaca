@@ -40,7 +40,7 @@ class Device(DriverBase):
 
     def __init__(self, name: str):
         super().__init__(name)
-        self.driver: AsyncNXOSDriver = Optional[None]
+        self.driver: Optional[AsyncNXOSDriver] = None
 
     async def login(self, creds: Optional[Credential] = None) -> bool:
         conn_args = dict(
@@ -51,6 +51,9 @@ class Device(DriverBase):
             timeout_ops=60,  # per command timeout
             transport="asyncssh",
         )
+
+        if (port := self.private.get("port")) is not None:
+            conn_args["port"] = int(port)
 
         self.log.info(f"{self.name}: Connecting to Cisco NX-OS SSH device")
         self.driver = AsyncNXOSDriver(host=self.device_host, **conn_args)

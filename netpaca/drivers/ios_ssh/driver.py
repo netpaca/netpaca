@@ -51,6 +51,9 @@ class Device(DriverBase):
             transport="asyncssh",
         )
 
+        if (port := self.private.get("port")) is not None:
+            conn_args["port"] = int(port)
+
         self.log.info(f"{self.name}: Connecting to Cisco SSH device")
         self.driver = AsyncIOSXEDriver(host=self.device_host, **conn_args)
 
