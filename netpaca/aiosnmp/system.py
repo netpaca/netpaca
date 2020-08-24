@@ -43,7 +43,7 @@ OID_SYS_UPTIME = "1.3.6.1.2.1.1.3"
 OID_SNMP_ENGINE_UPTIME = "1.3.6.1.6.3.10.2.1.3"  # not always avaialble
 
 
-async def get_sys_uptime(device: DriverBase, community: str) -> int:
+async def get_sys_uptime(device: DriverBase) -> int:
     """
     Returns the device SNMP sysUpTime value as an integer (TimeTicks).
 
@@ -51,9 +51,6 @@ async def get_sys_uptime(device: DriverBase, community: str) -> int:
     ----------
     device: DriverBase
         The device instance
-
-    community: str
-        The SNMPv2 community string
 
     Returns
     -------
@@ -69,11 +66,11 @@ async def get_sys_uptime(device: DriverBase, community: str) -> int:
     SNMP sysUpTime OID:
         http://oid-info.com/get/1.3.6.1.2.1.1.3
     """
-    res = await walk_table(device, oid=OID_SYS_UPTIME, community=community)
+    res = await walk_table(device, oid=OID_SYS_UPTIME)
     return int(res[0])
 
 
-async def get_snmpengine_uptime(device, community):
+async def get_snmpengine_uptime(device):
     """
     Returns the SNMP engine uptime value in seconds as int.  See References.
     If the device does not support this OID, then None is returned.
@@ -82,9 +79,6 @@ async def get_snmpengine_uptime(device, community):
     ----------
     device: DriverBase
         The instance of the dveice
-
-    community: str
-        The SNMPv2 community string
 
     Returns
     -------
@@ -96,7 +90,7 @@ async def get_snmpengine_uptime(device, community):
     http://oid-info.com/get/1.3.6.1.6.3.10.2.1.3
     """
     try:
-        res = await walk_table(device, oid=OID_SNMP_ENGINE_UPTIME, community=community)
+        res = await walk_table(device, oid=OID_SNMP_ENGINE_UPTIME)
         return int(res[0])
 
     except RuntimeError:

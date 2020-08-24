@@ -98,7 +98,12 @@ class CollectorExecutor(object):
                     asyncio.create_task(
                         self.exporter.export_metrics(device=device, metrics=metrics)
                     )
-                else:
+                elif hasattr(spec.collector, "metrics"):
+                    # if the collector is defined to have metrics (not all do),
+                    # but no metrics where produced, log a warning.  This
+                    # condition may or may not be an actual issue given that
+                    # some collectors might not have anything to emit during
+                    # that cycle.
                     self.log.warning(f"{log_ident} 0 metrics")
 
                 # sleep for an interval of time and then create a new task to

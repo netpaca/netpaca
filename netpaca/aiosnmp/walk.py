@@ -30,11 +30,9 @@ from typing import Optional, Callable, List, Any
 from netpaca.drivers import DriverBase
 
 from pysnmp.hlapi.asyncio import (
-    SnmpEngine,
     ObjectType,
     ObjectIdentity,
     nextCmd,
-    CommunityData,
     UdpTransportTarget,
     ContextData,
 )
@@ -56,7 +54,7 @@ SNMP_V2_PORT = 161
 
 
 async def walk_table(
-    device: DriverBase, oid, community, factory: Optional[Callable] = None
+    device: DriverBase, oid, factory: Optional[Callable] = None
 ) -> List[Any]:
     """
     This coroutine implements an SNMP "walk" of a given table starting
@@ -70,9 +68,6 @@ async def walk_table(
     oid: str
         The SNMP table OID string value, for example "1.3.6.1.2.1.1.3"
 
-    community: str
-        The SNMPv2 community string to access the MIB data
-
     factory: Callable
         If provided by Caller this function is called for reach var_bind ('row
         data') in the table so that this factory function can extract what is
@@ -81,8 +76,12 @@ async def walk_table(
         var_bind data only (via the .prettyPrint method).
     """
     target = device.device_host
-    snmp_engine = SnmpEngine()
-    snmp_community = CommunityData(community)
+
+    # obtain the pySnmp required objects from the device private dictionary.
+
+    dev_pysnmp = device.private["pysnmp"]
+    snmp_engine = dev_pysnmp["engine"]
+    snmp_community = dev_pysnmp["community"]
 
     initial_var_binds = var_binds = [ObjectType(ObjectIdentity(oid))]
     collected = list()

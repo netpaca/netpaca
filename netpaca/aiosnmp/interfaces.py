@@ -50,7 +50,7 @@ OID_IF_OPSTATUS = "1.3.6.1.2.1.2.2.1.8"  # provides interface up/down status
 OID_IF_LASTUPDATE = "1.3.6.1.2.1.2.2.1.9"  # provides last update time value
 
 
-async def get_if_name_table(device: DriverBase, community) -> dict:
+async def get_if_name_table(device: DriverBase) -> dict:
     """
     Fetches the ifName table and returns dictionary:
         key: int
@@ -62,17 +62,12 @@ async def get_if_name_table(device: DriverBase, community) -> dict:
     ----------
     device: DriverBase
         The device instance
-
-    community: str
-        The SNMPv2 community string
     """
-    recs = await walk_table(
-        device, oid=ODI_IF_NAME, community=community, factory=factory_ifindex_value
-    )
+    recs = await walk_table(device, oid=ODI_IF_NAME, factory=factory_ifindex_value)
     return dict(recs)
 
 
-async def get_if_alias_table(device: DriverBase, community) -> dict:
+async def get_if_alias_table(device: DriverBase) -> dict:
     """
     Fetches the ifAlias table and returns dictionary:
         key: int
@@ -84,17 +79,12 @@ async def get_if_alias_table(device: DriverBase, community) -> dict:
     ----------
     device: DriverBase
         The device instance
-
-    community: str
-        The SNMPv2 community string
     """
-    recs = await walk_table(
-        device, oid=OID_IF_DESC, community=community, factory=factory_ifindex_value
-    )
+    recs = await walk_table(device, oid=OID_IF_DESC, factory=factory_ifindex_value)
     return dict(recs)
 
 
-async def get_if_operstatus_table(device: DriverBase, community) -> dict:
+async def get_if_operstatus_table(device: DriverBase) -> dict:
     """
     Fetches the ifOpStatus table and returns dictionary:
         key: int
@@ -107,9 +97,6 @@ async def get_if_operstatus_table(device: DriverBase, community) -> dict:
     ----------
     device: DriverBase
         The device instance
-
-    community: str
-        The SNMPv2 community string
     """
 
     def factory(var_bind):
@@ -120,13 +107,11 @@ async def get_if_operstatus_table(device: DriverBase, community) -> dict:
         link_up = "1" == var_value.prettyPrint()
         return if_index, link_up
 
-    recs = await walk_table(
-        device, oid=OID_IF_OPSTATUS, community=community, factory=factory
-    )
+    recs = await walk_table(device, oid=OID_IF_OPSTATUS, factory=factory)
     return dict(recs)
 
 
-async def get_if_lastchange_table(device, community):
+async def get_if_lastchange_table(device):
     """
     Fetches the ifName table and returns dictionary:
         key: int
@@ -138,9 +123,6 @@ async def get_if_lastchange_table(device, community):
     ----------
     device: DriverBase
         The device instance
-
-    community: str
-        The SNMPv2 community string
     """
 
     def factory(var_bind):
@@ -150,9 +132,7 @@ async def get_if_lastchange_table(device, community):
         if_index = oid.asTuple()[-1]
         return if_index, int(var_value.prettyPrint())
 
-    recs = await walk_table(
-        device, oid=OID_IF_LASTUPDATE, community=community, factory=factory
-    )
+    recs = await walk_table(device, oid=OID_IF_LASTUPDATE, factory=factory)
     return dict(recs)
 
 
